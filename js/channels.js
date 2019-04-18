@@ -1,3 +1,21 @@
+var messageObject1 = {
+    own: true,
+    createdOn: new Date() , /* month 0 is jan. */
+    expiresOn:  new Date(Date.now() + 15 * 60 * 1000), /* month 0 is jan. */
+    createdBy: "vocally.clearly.crawled",
+    text: "Testin this dummy message",
+    jqueryObject : null,
+    update : function ()  {
+        var expiresIn = ((this.expiresOn - Date.now()) / 1000 / 60);
+        expiresIn = parseFloat(expiresIn.toFixed(1));
+          this.jqueryObject.find("em").empty();
+          this.jqueryObject.find("em").text(expiresIn + ' min. left');
+          if(expiresIn < 5) this.jqueryObject.find("em").css("color","red");
+           else this.jqueryObject.find("em").css("color","black");
+
+    }
+   
+};
 
 var yummy = {
     name: "#Yummy",

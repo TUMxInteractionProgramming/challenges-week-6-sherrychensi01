@@ -1,5 +1,11 @@
 /* start the external action and say hello */
 console.log("App is alive");
+$(document).reday(function(){
+    listChannels(compareNew);
+    loadEmojis();
+    console.log("App is initialized");
+
+})
 
 /** #10 global #array of channels #arr*/
 var channels = [
@@ -27,7 +33,7 @@ var currentLocation = {
  * Switch channels name in the right app bar
  * @param channelObject
  */
-function switchChannel(channelObject) {
+function switchChannel(channelObject, channelElement) {
     // Log the channel switch
     console.log("Tuning in to channel", channelObject);
 
@@ -56,6 +62,8 @@ function switchChannel(channelObject) {
 
     /* store selected channel in global variable */
     currentChannel = channelObject;
+    $(channelElement).addClass('selected');
+    showMessages(channelObject);
 }
 
 /* liking a channel on #click */
@@ -222,8 +230,13 @@ function listChannels(criterion) {
     $('#channels ul').empty();
 
     /* #10 append channels from #array with a #for loop */
-    for (i = 0; i < channels.length; i++) {
+    var ChannelElement = createChannelElement(channels[i]);
+    for (i = 0; i < channels.length; i++){
         $('#channels ul').append(createChannelElement(channels[i]));
+        if(channels[i] == currentChannel){
+            channelElement.addClass('selected');
+        }   
+
     };
 }
 
@@ -325,6 +338,10 @@ function createChannelElement(channelObject) {
     // The chevron
     $('<i>').addClass('fas').addClass('fa-chevron-right').appendTo(meta);
 
+    $(channel).click(function(){
+        switchChannel(channelObject, this);
+    })
+
     // return the complete channel
     return channel;
 }
@@ -354,4 +371,14 @@ function abortCreationMode() {
     $('#app-bar-create').removeClass('show');
     $('#button-create').hide();
     $('#button-send').show();
+}
+
+function showMessages(channelObject){
+    messages= channelObject.messages;
+    $('messages')=empty();
+    $.each(channelObject.messages,function(index,message){
+        $('#messages').append(createMessageElement(message));
+    })
+
+
 }
